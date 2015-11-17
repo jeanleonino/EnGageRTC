@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  model: function(model) {
+  model: function() {
     // assigning the username to a random string for now
     let username = Math.random().toString(32).split('.')[1];
 
@@ -10,6 +10,10 @@ export default Ember.Route.extend({
       id: username,
       username: username,
     });
+
+    // Remove this user when firebase connection is over
+    user.ref().onDisconnect().remove();
+    // Push the new user to firebase
     user.save();
 
     return user;
