@@ -13,9 +13,11 @@ export default Ember.Route.extend({
 
     // Remove this user when firebase connection is over
     user.ref().onDisconnect().remove();
-    // Push the new user to firebase
-    user.save();
 
-    return user;
+    // Ensure application is continued solely when user is on firebase
+    return new Ember.RSVP.Promise(resolve => {
+      // Push the new user to firebase and proceed
+      user.save().then(resolve);
+    });
   },
 });
